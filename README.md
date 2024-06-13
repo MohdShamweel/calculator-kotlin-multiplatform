@@ -14,9 +14,16 @@ This sample demonstrates the following KMP features:
 
 ## Screenshots
 
-<p align="center">
-  <img src="image1.png" alt="Android Screenshot" width="300"/>
-  <img src="image2.png" alt="iOS Screenshot" width="300"/>
+<p align="left">
+  <img src="image1.png" alt="Android Screenshot" width="200"/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     
+  <img src="image2.png" alt="iOS Screenshot" width="200"/>
+</p>
+<p align="left">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <sub>iOS (SwiftUI)</sub>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <sub>Android (Compose)</sub>
 </p>
 
 ## Advantages of Kotlin Multiplatform
@@ -36,7 +43,7 @@ This sample demonstrates the following KMP features:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/tirupati17/calculator-kotlin-multiplatform.git
    cd your-repo
    ```
 
@@ -121,3 +128,8 @@ let result = Calculator.Companion().sum(a: 3, b: 4)
 
 - Visit [Kotlin Multiplatform Developer Portal](https://kotlinlang.org/lp/mobile/) to learn more about the technology.
 - Check out the [Networking and Data Storage with KMP Hands-On](https://play.kotlinlang.org/hands-on/Networking%20and%20Data%20Storage%20with%20Kotlin%20Multiplatfrom%20Mobile/) lab to learn how to create a mobile application for Android and iOS with a shared codebase using Ktor and SQLDelight.
+
+This project is part of the [Kotlin Multiplatform Mobile GitHub repository](https://github.com/Kotlin/kmm-basic-sample).
+
+The UI for this project has been inspired by the iOS calculator for the Android version, using Jetpack Compose, and self-designed for iOS, kind of inspired by the Android Google calculator, using SwiftUI.
+
