@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jetbrains.kmm.androidApp.components.UserBar
 import com.jetbrains.kmm.androidApp.screen.LoginScreen
-import com.jetbrains.kmm.androidApp.screen.Screen
+import com.jetbrains.kmm.shared.enums.Screen
 import com.jetbrains.kmm.shared.Calculator
 import com.jetbrains.kmm.shared.manager.AuthManager
 import kotlinx.coroutines.launch

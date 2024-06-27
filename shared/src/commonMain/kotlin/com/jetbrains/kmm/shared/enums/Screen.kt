@@ -1,4 +1,4 @@
-package com.jetbrains.kmm.androidApp.screen
+package com.jetbrains.kmm.shared.enums
 
 sealed class Screen(val route: String) {
     data object LoginScreen : Screen("login_screen")
