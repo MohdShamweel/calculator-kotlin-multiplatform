@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("co.touchlab.skie") version "0.8.2"
 }
 
 kotlin {

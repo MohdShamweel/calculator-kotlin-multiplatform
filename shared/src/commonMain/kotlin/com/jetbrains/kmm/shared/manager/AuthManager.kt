@@ -8,7 +8,7 @@ import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-object AuthManager {
+class AuthManager {
 
     private val _user = MutableStateFlow<User?>(null)
     val user = _user.asStateFlow()
@@ -19,8 +19,8 @@ object AuthManager {
         }
     }
 
-    suspend fun login(idToken: String, onSuccess : () -> Unit) {
-        val firebaseCredential = GoogleAuthProvider.credential(idToken, null)
+    suspend fun login(idToken: String, accessToken: String? = null, onSuccess : () -> Unit) {
+        val firebaseCredential = GoogleAuthProvider.credential(idToken, accessToken)
         Firebase.auth.signInWithCredential(firebaseCredential).user?.let {
             _user.value = it.toUser()
             onSuccess()

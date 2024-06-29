@@ -5,6 +5,7 @@ plugins {
     kotlin("android").version("1.9.22").apply(false)
     kotlin("multiplatform").version("1.9.22").apply(false)
     id("com.google.gms.google-services") version "4.4.2" apply false
+  //  id("co.touchlab.skie") version "0.8.0" apply false
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
