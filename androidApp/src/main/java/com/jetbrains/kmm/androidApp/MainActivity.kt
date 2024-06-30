@@ -14,13 +14,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jetbrains.kmm.androidApp.components.UserBar
+import com.jetbrains.kmm.androidApp.screen.LoginScreen
+import com.jetbrains.kmm.shared.enums.Screen
 import com.jetbrains.kmm.shared.Calculator
+import com.jetbrains.kmm.shared.manager.AuthManager
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    private val authManager = AuthManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CalculatorApp()
+            val coroutineScope = rememberCoroutineScope()
+            val startScreen =
+                remember { if (authManager.isLoggedIn()) Screen.CalculatorScreen else Screen.LoginScreen }
+            var screen by remember { mutableStateOf(startScreen) }
+            val user by authManager.user.collectAsState()
+            when (screen) {
+                Screen.LoginScreen -> {
+                    LoginScreen(
+                        onLogin = {
+                            coroutineScope.launch {
+                                authManager.login(
+                                    idToken = it,
+                                    onSuccess = {
+                                        screen = Screen.CalculatorScreen
+                                    }
+                                )
+                            }
+                        }
+                    )
+                }
+
+                Screen.CalculatorScreen -> {
+                    Column(Modifier.background(Color.Black)) {
+                        if (user != null) {
+                            UserBar(
+                                user = user,
+                                onLogout = {
+                                    coroutineScope.launch {
+                                        authManager.logout()
+                                        screen = Screen.LoginScreen
+                                    }
+                                }
+                            )
+                        }
+                        CalculatorApp()
+                    }
+                }
+            }
         }
     }
 }

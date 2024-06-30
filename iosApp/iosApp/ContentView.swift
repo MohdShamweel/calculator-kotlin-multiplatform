@@ -1,5 +1,8 @@
 import SwiftUI
 import shared
+import FirebaseCore
+import FirebaseAuth
+import GoogleSignIn
 
 struct ContentView: View {
     let calculator = Calculator.Companion()
@@ -17,52 +20,119 @@ struct ContentView: View {
         ["0", ".", "="]
     ]
     
+    
+    @ObservedObject private var userState = UserState()
+    
+    
     var body: some View {
-        VStack(spacing: 5) {
-            VStack {
-                Image(systemName: "checkerboard.shield")
-                    .foregroundColor(.primary)
-                    .font(.system(size: 40))
-
+        
+        
+        if(userState.startScreen == Screen.LoginScreen()){
+            Button(action: {
+                
+                userState.login()
+                
+            }) {
                 HStack {
-                    Text("Calculator")
-                        .foregroundColor(.primary)
-                        .font(.largeTitle)
-                        .bold()
+                    AsyncImage(url: URL(string: "https://static-00.iconduck.com/assets.00/google-icon-512x512-wk1c10qc.png")){
+                        result in result.image?
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+                    Text("Sign in with Google")
                 }
-  
-                Text("Using Kotlin Multiplatform")
-                    .foregroundColor(.secondary)
-                    .grayscale(1)
-                    .font(.subheadline)
+                
             }
-            Spacer()
-            Text(displayValue)
-                .font(.system(size: 72))
-                .foregroundColor(.primary)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .trailing)
-            
-            ForEach(buttonValues, id: \.self) { row in
-                HStack(spacing: 5) {
-                    ForEach(row, id: \.self) { button in
-                        Button(action: {
-                            self.buttonTapped(button)
-                        }) {
-                            Text(button)
-                                .frame(width: self.buttonWidth(button) - 20, height: self.buttonHeight() - 20)
-                                   .foregroundColor(.primary)
+            .font(.caption)
+            .foregroundColor(.primary)
+            .buttonBorderShape(.roundedRectangle)
+            .buttonStyle(.bordered)
+            .background(Color.white)
+            .cornerRadius(.infinity)
+        }
+        else {
+            VStack(spacing: 5) {
+                
+                HStack{
+                    HStack() {
+                        AsyncImage(url: URL(string: userState.user?.photoUrl ?? "")){
+                            result in result.image?
+                                .resizable()
+                                .scaledToFill()
                         }
-                        .font(.title)
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        Text(userState.user?.name ?? "")
+                            .foregroundColor(.primary)
+                            .bold()
+                        
+                    }
+                    
+                    Spacer()
+                    Button(action: {
+                        userState.logout()
+                        
+                    }) {
+                        Text("Logout")
+                    }
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundColor(.orange)
+                    .background(Color.white)
+                    .cornerRadius(.infinity)
+                    .buttonBorderShape(.roundedRectangle)
+                    .buttonStyle(.bordered)
+                }.padding(8)
+                Divider()
+                
+                VStack {
+                    Image(systemName: "checkerboard.shield")
                         .foregroundColor(.primary)
-                        .buttonBorderShape(.roundedRectangle)
-                        .buttonStyle(.bordered)
+                        .font(.system(size: 40))
+                    
+                    HStack {
+                        Text("Calculator")
+                            .foregroundColor(.primary)
+                            .font(.largeTitle)
+                            .bold()
+                    }
+                    
+                    Text("Using Kotlin Multiplatform")
+                        .foregroundColor(.secondary)
+                        .grayscale(1)
+                        .font(.subheadline)
+                }
+                Spacer()
+                Text(displayValue)
+                    .font(.system(size: 72))
+                    .foregroundColor(.primary)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                
+                ForEach(buttonValues, id: \.self) { row in
+                    HStack(spacing: 5) {
+                        ForEach(row, id: \.self) { button in
+                            Button(action: {
+                                self.buttonTapped(button)
+                            }) {
+                                Text(button)
+                                    .frame(width: self.buttonWidth(button) - 20, height: self.buttonHeight() - 20)
+                                    .foregroundColor(.primary)
+                            }
+                            .font(.title)
+                            .foregroundColor(.primary)
+                            .buttonBorderShape(.roundedRectangle)
+                            .buttonStyle(.bordered)
+                        }
                     }
                 }
             }
+            .padding()
         }
-        .padding()
     }
+    
     
     private func buttonTapped(_ button: String) {
         switch button {

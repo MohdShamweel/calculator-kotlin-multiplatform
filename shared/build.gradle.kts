@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("co.touchlab.skie") version "0.8.2"
 }
 
 kotlin {
@@ -19,10 +20,15 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
+            isStatic = true
         }
     }
 
     sourceSets {
+        commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
+            implementation("dev.gitlive:firebase-auth:1.13.0")
+        }
         commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -42,7 +48,7 @@ android {
     compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
     }
     namespace = "com.jetbrains.android"
     compileOptions {
