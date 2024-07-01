@@ -33,6 +33,15 @@ class MainActivity : ComponentActivity() {
                 remember { if (authManager.isLoggedIn()) Screen.CalculatorScreen else Screen.LoginScreen }
             var screen by remember { mutableStateOf(startScreen) }
             val user by authManager.user.collectAsState()
+
+            LaunchedEffect(user) {
+                screen = if (user != null) {
+                    Screen.CalculatorScreen
+                } else {
+                    Screen.LoginScreen
+                }
+            }
+
             when (screen) {
                 Screen.LoginScreen -> {
                     LoginScreen(
