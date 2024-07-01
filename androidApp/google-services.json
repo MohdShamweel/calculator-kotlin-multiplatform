@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "60784378706-ctj10l9sa7lk8qohinpe6n6jn93g0ai9.apps.googleusercontent.com",
+          "client_id": "60784378706-o79r4vb1uvafr51covu7tdju1dhl0ri4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jetbrains.androidApp",
-            "certificate_hash": "1b990b231032bd5a80c29c50e0de8328846b188f"
+            "certificate_hash": "92e52a7a2d126a8e718c036f41dd4e7fc4f5f052"
           }
         },
         {
@@ -37,6 +37,13 @@
             {
               "client_id": "60784378706-oldvsjdgu5giohtg9c9gv4g87k80ckt3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "60784378706-ojgorpldbttnfbgard8ste5itfenrieg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jetbrains.androidApp"
+              }
             }
           ]
         }

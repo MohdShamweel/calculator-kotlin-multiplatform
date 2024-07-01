@@ -19,11 +19,18 @@ class AuthManager {
         }
     }
 
-    suspend fun login(idToken: String, accessToken: String? = null, onSuccess : () -> Unit) {
+    suspend fun login(idToken: String, accessToken: String? = null, onSuccess: () -> Unit) {
         val firebaseCredential = GoogleAuthProvider.credential(idToken, accessToken)
-        Firebase.auth.signInWithCredential(firebaseCredential).user?.let {
-            _user.value = it.toUser()
+        try {
+            val authResult = Firebase.auth.signInWithCredential(firebaseCredential)
+            authResult.user?.let {
+                _user.value = it.toUser()
+            }
             onSuccess()
+        } catch (e: Exception) {
+            // Handle sign-in failure
+            // You might want to throw this exception or handle it in some way
+            throw e
         }
     }
 
