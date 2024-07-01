@@ -1,5 +1,6 @@
 package com.jetbrains.kmm.androidApp.screen
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -14,9 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,28 +44,43 @@ fun LoginScreen(
             .build()
     }
 
+    var isLoading by remember { mutableStateOf(false) }
+
     val googleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
-            val signInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            val googleSignInAccount = signInAccountTask.getResult(ApiException::class.java)
-            val idToken = googleSignInAccount.idToken.orEmpty()
-            onLogin(idToken)
+            Log.d("LoginScreen", "Received result from Google Sign-In")
+            try {
+                val signInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                val googleSignInAccount = signInAccountTask.getResult(ApiException::class.java)
+                val idToken = googleSignInAccount.idToken.orEmpty()
+                Log.d("LoginScreen", "Google Sign-In successful, ID Token: $idToken")
+                onLogin(idToken)
+            } catch (e: ApiException) {
+                Log.e("LoginScreen", "Google Sign-In failed with ApiException", e)
+                isLoading = false // Set loading to false in case of error
+            } catch (e: Exception) {
+                Log.e("LoginScreen", "Google Sign-In failed with Exception", e)
+                isLoading = false // Set loading to false in case of error
+            }
         }
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
-        SignInWithGoogle(
-            modifier = Modifier.align(Alignment.Center),
-            onClick = {
-                val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
-                googleLauncher.launch(googleSignInClient.signInIntent)
-            }
-        )
+        if (isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else {
+            SignInWithGoogle(
+                modifier = Modifier.align(Alignment.Center),
+                onClick = {
+                    isLoading = true
+                    val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+                    googleLauncher.launch(googleSignInClient.signInIntent)
+                }
+            )
+        }
     }
-
 }
-
 
 @Composable
 fun SignInWithGoogle(
@@ -99,6 +115,5 @@ fun SignInWithGoogle(
                 color = Color.Gray
             )
         }
-
     }
 }
